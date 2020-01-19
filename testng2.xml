@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Regression test suite" verbose="1" parallel="false">
+    <test name="Group test">
+        <groups>
+            <run>
+                <include name="Add" />
+            </run>
+        </groups>
+        <packages>
+            <package name = "com.lits.makukh.calculator"></package>
+        </packages>
+    </test>
+</suite>
