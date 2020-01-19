@@ -1,0 +1,24 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Test homework suite" verbose="1" parallel="false">
+    <test name="Acceptance test">
+        <groups>
+            <run>
+                <include name="acceptance"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="com.lits.makukh.calculator.homework"></package>
+        </packages>
+
+    </test>
+    <test name="Full regression test">
+        <groups>
+            <run>
+                <include name="regression"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="com.lits.makukh.calculator.homework"></package>
+        </packages>
+    </test>
+</suite>
