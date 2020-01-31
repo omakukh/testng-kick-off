@@ -6,9 +6,8 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import com.lits.makukh.lits.LitsHttpClient;
+import okhttp3.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.io.IOException;
@@ -17,16 +16,19 @@ import java.util.List;
 
 public class TestGetGoogle {
 
+   private LitsHttpClient client = new LitsHttpClient();
+
     @Test
     public void testGetGoogle() throws IOException {
-        //Initialize Http client
-        OkHttpClient okHttpClient = new OkHttpClient();
-
-        //Prepare Http request
-        Request getGoogleRequest = new Request.Builder().url("https://www.google.com/").build();
-
+//        //Initialize Http client
+//        OkHttpClient okHttpClient = new OkHttpClient();
+//
+//        //Prepare Http request
+//        Request getGoogleRequest = new Request.Builder().url("https://www.google.com/").build();
         //Execute request/get response
-        Response getGoogleResponse = okHttpClient.newCall(getGoogleRequest).execute();
+        //Response getGoogleResponse = okHttpClient.newCall(getGoogleRequest).execute();
+
+        Response getGoogleResponse = client.GET("https://google.com");
 
         String stringResponse = getGoogleResponse.body().string();
         System.out.println("BODY: " + stringResponse);
@@ -43,23 +45,27 @@ public class TestGetGoogle {
     @Test
     public void testGetCurrencyExchangeRate() throws IOException{
 
-        //Initialize Http client
-        OkHttpClient okHttpClient = new OkHttpClient();
+//        //Initialize Http client
+//        OkHttpClient okHttpClient = new OkHttpClient();
+//
+//        //Prepare Http request
+//        Request getNBURequest = new Request.Builder().url("https://bank.gov.ua/NBU_Exchange/exchange?date=20.01.2020&json").build();
+//
+//        //Execute request/get response
+//        Response getNBUResponse = okHttpClient.newCall(getNBURequest).execute();
 
-        //Prepare Http request
-        Request getNBURequest = new Request.Builder().url("https://bank.gov.ua/NBU_Exchange/exchange?date=20.01.2020&json").build();
+        Response getNBUResponse = client.GET("https://bank.gov.ua/NBU_Exchange/exchange?date=20.01.2020&json");
 
-        //Execute request/get response
-        Response getNBUResponse = okHttpClient.newCall(getNBURequest).execute();
+        CurrencyRate[] currencyRates = LitsHttpClient.convert(getNBUResponse, CurrencyRate[].class);
 
-        //Create
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        String string = getNBUResponse.body().string();
-
-        CollectionType collectionType = objectMapper.getTypeFactory().constructCollectionType(List.class, CurrencyRate.class);
-        List<CurrencyRate> currencyRates = objectMapper.readValue(string, collectionType);
+//        //Create
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//
+//        String string = getNBUResponse.body().string();
+//
+//        CollectionType collectionType = objectMapper.getTypeFactory().constructCollectionType(List.class, CurrencyRate.class);
+//        List<CurrencyRate> currencyRates = objectMapper.readValue(string, collectionType);
 
         for (CurrencyRate currencyRate : currencyRates){
             System.out.println(currencyRate);
